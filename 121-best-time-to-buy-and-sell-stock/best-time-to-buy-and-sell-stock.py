@@ -1,13 +1,13 @@
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
-        min_price = float('inf')  # Start with a very high minimum price
-        max_profit = 0  # Initialize maximum profit to 0
+        l, r = 0, 1
+        maxP = 0
 
-        for price in prices:
-            # Update the minimum price
-            min_price = min(min_price, price)
-            # Calculate the profit and update the maximum profit
-            max_profit = max(max_profit, price - min_price)
-
-        return max_profit
-        
+        while r < len(prices):
+            if prices[l] < prices[r]:
+                profit = prices[r] - prices[l]
+                maxP = max(maxP, profit)
+            else:
+                l = r
+            r += 1
+        return maxP
