@@ -5,7 +5,7 @@ class Solution(object):
         def backtrack(start, path):
             if len(path) == k:
                 result.append(path[:])
-                return
+                
 
             for num in range(start, n + 1):
                 path.append(num)
