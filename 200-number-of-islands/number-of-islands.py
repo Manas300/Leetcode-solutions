@@ -1,29 +1,32 @@
 class Solution:
     def numIslands(self, grid: List[List[str]]) -> int:
-        directions = [[1, 0], [-1, 0], [0, 1], [0, -1]]
-        ROWS, COLS = len(grid), len(grid[0])
-        islands = 0
+        # If the grid is empty, return 0 islands
+        if not grid:
+            return 0
+        
+        rows, cols = len(grid), len(grid[0])  # dimensions of the grid
+        islands = 0  # counter for number of islands
 
-        def bfs(r, c):
-            q = deque()
-            grid[r][c] = "0"
-            q.append((r, c))
+        # DFS function to explore and mark all connected land
+        def dfs(r, c):
+            # Base case: stop if out of bounds or at water
+            if r < 0 or r >= rows or c < 0 or c >= cols or grid[r][c] == '0':
+                return
+            # Mark the current land cell as visited by changing '1' -> '0'
+            grid[r][c] = '0'
+            # Explore all 4 directions recursively
+            dfs(r+1, c)  # down
+            dfs(r-1, c)  # up
+            dfs(r, c+1)  # right
+            dfs(r, c-1)  # left
 
-            while q:
-                row, col = q.popleft()  
-                for dr, dc in directions:
-                    nr, nc = dr + row, dc + col
-                    if (nr < 0 or nc < 0 or nr >= ROWS or
-                        nc >= COLS or grid[nr][nc] == "0"
-                    ):
-                        continue
-                    q.append((nr, nc))
-                    grid[nr][nc] = "0"
+        # Loop through every cell in the grid
+        for i in range(rows):
+            for j in range(cols):
+                # If the cell is land ('1'), it's a new island
+                if grid[i][j] == '1':
+                    islands += 1          # count this island
+                    dfs(i, j)             # flood-fill all connected land
 
-        for r in range(ROWS):
-            for c in range(COLS):
-                if grid[r][c] == "1":
-                    bfs(r, c)
-                    islands += 1
-
+        # Return the total number of islands
         return islands
