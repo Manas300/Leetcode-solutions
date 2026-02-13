@@ -1,22 +1,21 @@
-class Solution(object):
-    def permute(self, nums):
+from typing import List
+
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
         result = []
 
         def backtrack(path):
-
-            # Base Case
+            # Base case: path has all numbers
             if len(path) == len(nums):
-                result.append(path[:])
+                result.append(path[:])  # save a copy
                 return
 
+            # Try each number that is not already in path
             for num in nums:
-                # Constraint
-                if num in path:
-                    continue
-
-                path.append(num)
-                backtrack(path)
-                path.pop()
+                if num not in path:
+                    path.append(num)       # choose
+                    backtrack(path)        # explore
+                    path.pop()             # undo choice (backtrack)
 
         backtrack([])
         return result
